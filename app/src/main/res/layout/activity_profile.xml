@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#f1f2f4">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@android:color/white">
+
+            <ImageView
+                android:id="@+id/profile_back"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:padding="@dimen/dp_16"
+                android:src="@mipmap/back" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="@string/profile_title"
+                android:textColor="#444"
+                android:textSize="@dimen/sp_18" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:background="@android:color/white"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:id="@+id/icon_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_8"
+                android:background="@android:color/white"
+                android:paddingBottom="@dimen/dp_8"
+                android:paddingLeft="@dimen/sp_16"
+                android:paddingRight="@dimen/sp_16"
+                android:paddingTop="@dimen/dp_8">
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="@string/profile_icon_title"
+                    android:textColor="#444"
+                    android:textSize="@dimen/sp_16" />
+
+                <ImageView
+                    android:id="@+id/icon_arrow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:src="@mipmap/more" />
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/user_icon"
+                    android:layout_width="@dimen/dp_32"
+                    android:layout_height="@dimen/dp_32"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/dp_8"
+                    android:layout_toLeftOf="@id/icon_arrow"
+                    android:src="@mipmap/default_user_icon" />
+
+
+            </RelativeLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:layout_marginLeft="@dimen/dp_16"
+                android:layout_marginRight="@dimen/dp_16"
+                android:background="#e5e5e5" />
+
+            <RelativeLayout
+                android:id="@+id/username_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/dp_8"
+                android:layout_marginTop="@dimen/dp_8"
+                android:background="@android:color/white"
+                android:paddingBottom="@dimen/dp_8"
+                android:paddingLeft="@dimen/sp_16"
+                android:paddingRight="@dimen/sp_16"
+                android:paddingTop="@dimen/dp_8">
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="@string/profile_username_title"
+                    android:textColor="#444"
+                    android:textSize="@dimen/sp_16" />
+
+
+                <TextView
+                    android:id="@+id/username_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/dp_8"
+                    android:textColor="#828282" />
+
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_marginLeft="@dimen/dp_16"
+            android:layout_marginRight="@dimen/dp_16"
+            android:background="#e5e5e5" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/white"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:id="@+id/nickname_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/dp_8"
+                android:background="@android:color/white"
+                android:paddingBottom="@dimen/dp_8"
+                android:paddingLeft="@dimen/sp_16"
+                android:paddingRight="@dimen/sp_16"
+                android:paddingTop="@dimen/dp_16">
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="@string/profile_nickname_title"
+                    android:textColor="#444"
+                    android:textSize="@dimen/sp_16" />
+
+                <ImageView
+                    android:id="@+id/nickname_arrow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:src="@mipmap/more" />
+
+                <TextView
+                    android:id="@+id/nickname_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/dp_8"
+                    android:layout_toLeftOf="@id/nickname_arrow"
+                    android:textColor="#828282" />
+
+
+            </RelativeLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:layout_marginLeft="@dimen/dp_16"
+                android:layout_marginRight="@dimen/dp_16"
+                android:background="#e5e5e5" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/dp_8"
+                android:background="@android:color/white"
+                android:paddingBottom="@dimen/dp_8"
+                android:paddingLeft="@dimen/sp_16"
+                android:paddingRight="@dimen/sp_16"
+                android:paddingTop="@dimen/dp_8"
+                android:visibility="gone">
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="@string/profile_address_title"
+                    android:textColor="#444"
+                    android:textSize="@dimen/sp_16" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:src="@mipmap/more" />
+
+                <!--<TextView-->
+                <!--android:id="@+id/account_text"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_centerVertical="true"-->
+                <!--android:layout_marginRight="@dimen/dp_8"-->
+                <!--android:layout_toLeftOf="@id/account_arrow"-->
+                <!--android:text="188*****4567"-->
+                <!--android:textColor="#828282" />-->
+
+
+            </RelativeLayout>
+
+
+        </LinearLayout>
+
+
+        <RelativeLayout
+            android:id="@+id/address_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/white"
+            android:padding="@dimen/dp_16">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="@string/profile_address_title"
+                android:textColor="#444"
+                android:textSize="@dimen/sp_16" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:src="@mipmap/more" />
+
+            <!--<TextView-->
+            <!--android:id="@+id/account_text"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_centerVertical="true"-->
+            <!--android:layout_marginRight="@dimen/dp_8"-->
+            <!--android:layout_toLeftOf="@id/account_arrow"-->
+            <!--android:text="188*****4567"-->
+            <!--android:textColor="#828282" />-->
+
+
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
+</RelativeLayout>

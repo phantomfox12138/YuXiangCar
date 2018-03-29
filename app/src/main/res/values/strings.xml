@@ -1,0 +1,95 @@
+<resources>
+    <string name="app_name">YuXiangCar</string>
+
+    <string name="title_home">首页</string>
+    <string name="title_store">门店</string>
+    <string name="title_profile">个人中心</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="home_title">宇祥车服</string>
+
+    <string name="more">更多</string>
+    <string name="end_line">我也是有底线的</string>
+    <string name="show_more">查看更多</string>
+    <string name="delete">删除</string>
+    <string name="edit">编辑</string>
+    <string name="save">保存</string>
+    <string name="on">开启</string>
+    <string name="off">关闭</string>
+    <string name="confirm">确定</string>
+    <string name="cancel">取消</string>
+
+
+    <string name="home_menu_repair">汽修</string>
+    <string name="home_menu_rescue">道路救援</string>
+    <string name="home_menu_beauty">汽车美容</string>
+    <string name="home_menu_tires">更换轮胎</string>
+    <string name="home_menu_accessories">汽车配件</string>
+    <string name="home_menu_second_hand">二手车</string>
+    <string name="home_menu_park">预约停车</string>
+    <string name="home_menu_baodian">车友宝典</string>
+
+    <string name="home_star_title">明星维修站</string>
+    <string name="home_sell_title">特卖活动</string>
+
+    <string name="mine_title">个人中心</string>
+    <string name="mine_service_code">服务码</string>
+    <string name="mine_card_title">卡券</string>
+    <string name="mine_order_wait_pay">待付款</string>
+    <string name="mine_order_wait_service">待服务</string>
+    <string name="mine_order_wait_appraise">待评价</string>
+    <string name="mine_my_car">我的爱车</string>
+    <string name="mine_my_second_hand">二手车</string>
+    <string name="mine_my_collection">我的收藏</string>
+    <string name="mine_my_message">我的消息</string>
+    <string name="mine_my_kefu">售后/退款</string>
+    <string name="mine_my_setting">设置</string>
+    <string name="mine_my_order_title">我的订单</string>
+
+    <string name="login_title">登录</string>
+    <string name="login_username_hint">请输入手机号码</string>
+    <string name="login_password_hint">请输入动态密码</string>
+    <string name="login_send_sms_code">获取验证码</string>
+    <string name="login_third_login">第三方登录</string>
+    <string name="login_wechat">微信</string>
+    <string name="login_qq">QQ</string>
+    <string name="login_weibo">微博</string>
+    <string name="regist_image_confirm_code">输入右侧验证码</string>
+    <string name="regist_send_sms_code">发送验证码</string>
+    <string name="regist_sms_count_down">秒后重新获取</string>
+
+    <string name="profile_title">个人资料</string>
+    <string name="profile_icon_title">个人头像</string>
+    <string name="profile_username_title">账号</string>
+    <string name="profile_nickname_title">昵称</string>
+    <string name="profile_address_title">收货地址</string>
+    <string name="profile_address_add">新增</string>
+    <string name="profile_address_list_title">地址管理</string>
+    <string name="profile_address_name">收货人：</string>
+    <string name="profile_address_address">地址：</string>
+    <string name="profile_address_edit">编辑：</string>
+    <string name="profile_address_delete">删除：</string>
+    <string name="profile_address_set_default">设为默认</string>
+    <string name="profile_address_default">默认地址</string>
+    <string name="profile_address_add_title">新增地址</string>
+    <string name="profile_address_receive_name">收货人姓名</string>
+    <string name="profile_address_receive_tel">收货人电话</string>
+    <string name="profile_address_receive_direction">省/市/区</string>
+    <string name="profile_address_receive_detail">详细地址</string>
+    <string name="profile_address_set_default_title">设为默认</string>
+    <string name="profile_modify_username_title">昵称</string>
+    <string name="profile_modify_username_hint">请输入昵称</string>
+    <string name="profile_modify_hint">限3~16位字符</string>
+
+
+    <string name="setting_title">设置</string>
+    <string name="setting_receive_sms">接收短信通知</string>
+    <string name="setting_new_msg_tong">新消息声音提醒</string>
+    <string name="setting_msg_no_disturb">消息面打扰</string>
+    <string name="setting_update">版本更新</string>
+    <string name="setting_about">关于我们</string>
+    <string name="setting_logout">退出登录</string>
+
+</resources>

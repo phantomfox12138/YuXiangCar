@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#f2f2f2"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/white">
+
+        <ImageView
+            android:id="@+id/profile_back"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:padding="@dimen/dp_16"
+            android:src="@mipmap/back" />
+
+        <TextView
+            android:id="@+id/profile_confirm"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:padding="@dimen/dp_16"
+            android:text="@string/save"
+            android:textColor="@color/theme_red" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/profile_modify_username_title"
+            android:textColor="#444"
+            android:textSize="@dimen/sp_18" />
+    </RelativeLayout>
+
+    <EditText
+        android:id="@+id/username_edit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dp_16"
+        android:layout_marginRight="@dimen/dp_16"
+        android:layout_marginTop="@dimen/dp_32"
+        android:background="@color/white"
+        android:backgroundTint="@color/white"
+        android:drawableRight="@mipmap/icon_delete"
+        android:hint="@string/profile_modify_username_hint"
+        android:maxLength="10"
+        android:padding="@dimen/dp_8" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dp_16"
+        android:layout_marginTop="@dimen/dp_16"
+        android:paddingLeft="@dimen/dp_8"
+        android:text="@string/profile_modify_hint"
+        android:textColor="#878787"
+        android:textSize="@dimen/sp_14" />
+
+</LinearLayout>
