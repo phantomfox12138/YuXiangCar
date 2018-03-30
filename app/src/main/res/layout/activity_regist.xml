@@ -31,7 +31,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="@string/login_title"
+            android:text="@string/regist_title"
             android:textColor="#444"
             android:textSize="@dimen/sp_20" />
 
@@ -108,25 +108,12 @@
             android:layout_centerVertical="true"
             android:src="@mipmap/icon_password" />
 
-        <TextView
-            android:id="@+id/sms_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:background="@drawable/sms_btn_background"
-            android:padding="@dimen/dp_8"
-            android:text="@string/login_send_sms_code"
-            android:textColor="@android:color/white"
-            android:visibility="gone" />
-
         <EditText
             android:id="@+id/password_edit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/dp_16"
-            android:layout_marginRight="@dimen/dp_8"
-            android:layout_toLeftOf="@id/sms_btn"
             android:layout_toRightOf="@id/password_icon"
             android:background="@null"
             android:hint="@string/login_password_hint"
@@ -145,48 +132,72 @@
         android:layout_marginRight="@dimen/dp_8"
         android:background="#ddd" />
 
+    <RelativeLayout
+        android:id="@+id/valide"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/password_line"
+        android:layout_marginLeft="@dimen/dp_8"
+        android:layout_marginRight="@dimen/dp_8"
+        android:padding="@dimen/dp_8">
+
+        <ImageView
+            android:id="@+id/valide_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/icon_valide" />
+
+        <TextView
+            android:id="@+id/sms_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/sms_btn_background"
+            android:padding="@dimen/dp_8"
+            android:text="@string/login_send_sms_code"
+            android:textColor="@android:color/white" />
+
+        <EditText
+            android:id="@+id/valide_edit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dp_16"
+            android:layout_marginRight="@dimen/dp_8"
+            android:layout_toLeftOf="@id/sms_btn"
+            android:layout_toRightOf="@id/valide_icon"
+            android:background="@null"
+            android:hint="@string/regist_valide_code_hint"
+            android:inputType="number"
+            android:textColor="#444"
+            android:textSize="@dimen/sp_16" />
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/valide_line"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/px_1"
+        android:layout_below="@id/valide"
+        android:layout_marginLeft="@dimen/dp_8"
+        android:layout_marginRight="@dimen/dp_8"
+        android:background="#ddd" />
+
     <TextView
         android:id="@+id/login_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/password_line"
+        android:layout_below="@id/valide_line"
         android:layout_marginLeft="@dimen/dp_16"
         android:layout_marginRight="@dimen/dp_16"
         android:layout_marginTop="@dimen/dp_32"
         android:background="@drawable/login_btn_clickable_shape"
         android:gravity="center"
         android:padding="@dimen/dp_16"
-        android:text="@string/login_title"
+        android:text="@string/regist_title"
         android:textColor="#fff"
         android:textSize="@dimen/sp_18" />
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/login_btn"
-        android:layout_marginLeft="@dimen/dp_16"
-        android:layout_marginRight="@dimen/dp_16"
-        android:layout_marginTop="@dimen/dp_16"
-        android:padding="@dimen/dp_8">
-
-        <TextView
-            android:id="@+id/to_regist"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/regist_btn"
-            android:textColor="#444"
-            android:textSize="@dimen/sp_16" />
-
-        <TextView
-            android:id="@+id/to_fpwd"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:text="@string/login_forget_pwd"
-            android:textColor="#444"
-            android:textSize="@dimen/sp_16" />
-
-    </RelativeLayout>
 
 
 </RelativeLayout>

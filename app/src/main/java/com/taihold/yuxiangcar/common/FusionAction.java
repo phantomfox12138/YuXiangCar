@@ -24,6 +24,8 @@ public class FusionAction
     
     public static final String IMAGE_VALIDE_ACTION = "com.taihold.yuxiang.IMAGE_VERIFY";
     
+    public static final String REGIST_ACTION = "com.taihold.yuxiang.REGIST_ACTION";
+    
     public interface LoginExtra
     {
         String USERNAME = "username";

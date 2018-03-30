@@ -50,4 +50,45 @@ public class HomeLogic extends BaseLogic
         
         mQueue.add(0, request, listener);
     }
+    
+    public void valideSmsCode(String phone, String code,
+            OnResponseListener<JSONObject> listener)
+    {
+        Request<JSONObject> request = NoHttp.createJsonObjectRequest(HttpHelper.HTTP_HEADER
+                + HttpHelper.REQUEST_VALIDE_SMS_CODE,
+                RequestMethod.POST);
+        
+        request.add("phone", phone);
+        request.add("code", code);
+        
+        mQueue.add(0, request, listener);
+    }
+    
+    public void userRegist(String sid, String phone, String password,
+            OnResponseListener<JSONObject> listener)
+    {
+        Request<JSONObject> request = NoHttp.createJsonObjectRequest(HttpHelper.HTTP_HEADER
+                + HttpHelper.REQUEST_USER_REGIST,
+                RequestMethod.POST);
+        
+        request.add("__sid", sid);
+        request.add("phone", phone);
+        request.add("password", password);
+        
+        mQueue.add(0, request, listener);
+        
+    }
+    
+    public void userLogin(String phone, String password,
+            OnResponseListener<JSONObject> listener)
+    {
+        Request<JSONObject> request = NoHttp.createJsonObjectRequest(HttpHelper.HTTP_HEADER
+                + HttpHelper.REQUEST_USER_LOGIN,
+                RequestMethod.POST);
+        
+        request.add("phone", phone);
+        request.add("password", password);
+        
+        mQueue.add(0, request, listener);
+    }
 }

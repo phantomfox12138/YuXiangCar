@@ -1,37 +1,31 @@
 package com.taihold.yuxiangcar.ui.activity;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.TextView;
+import android.widget.Toast;
 
 import com.taihold.yuxiangcar.R;
 import com.taihold.yuxiangcar.common.FusionAction;
 import com.taihold.yuxiangcar.logic.HomeLogic;
+import com.taihold.yuxiangcar.util.JsonUtil;
 import com.yanzhenjie.nohttp.rest.OnResponseListener;
 import com.yanzhenjie.nohttp.rest.Response;
 
+import org.json.JSONException;
 import org.json.JSONObject;
-
-import static com.taihold.yuxiangcar.common.FusionAction.LoginExtra.IMAGE_VALIDE;
 
 public class LoginActivity extends BaseActivity
 {
     private static final String TAG = "LoginActivity";
     
-    private TextView mSmsBtn;
+    private HomeLogic mHomelogic;
     
-    private EditText mPhoneEdit;
+    private EditText mUserNameEdit;
     
-    private HomeLogic mHomeLogic;
-    
-    private String mImageValide;
-    
-    private TimeCount mCountDown;
+    private EditText mPwdEdit;
     
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -39,115 +33,112 @@ public class LoginActivity extends BaseActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         
-        mHomeLogic = (HomeLogic) getLogic(HomeLogic.class);
+        mHomelogic = (HomeLogic) getLogic(HomeLogic.class);
         
         initView();
     }
     
     private void initView()
     {
-        mSmsBtn = findViewById(R.id.sms_btn);
-        mPhoneEdit = findViewById(R.id.username_edit);
+        mUserNameEdit = findViewById(R.id.username_edit);
+        mPwdEdit = findViewById(R.id.password_edit);
         
-        mCountDown = new TimeCount(60000, 1000);
-        
-        mSmsBtn.setOnClickListener(new View.OnClickListener()
+        findViewById(R.id.back_btn).setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View view)
             {
-                String phone = mPhoneEdit.getText().toString();
-                
-                Intent intent = new Intent(FusionAction.IMAGE_VALIDE_ACTION);
-                intent.putExtra(FusionAction.LoginExtra.USERNAME, phone);
-                
-                startActivityForResult(intent,
-                        FusionAction.LoginExtra.IMAGE_CODE);
+                finish();
             }
         });
-    }
-    
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
-        super.onActivityResult(requestCode, resultCode, data);
         
-        if (resultCode == RESULT_OK)
+        findViewById(R.id.to_regist).setOnClickListener(new View.OnClickListener()
         {
-            switch (requestCode)
+            @Override
+            public void onClick(View view)
             {
-                case FusionAction.LoginExtra.IMAGE_CODE:
-                    
-                    mImageValide = data.getStringExtra(IMAGE_VALIDE);
-                    
-                    mCountDown.start();
-                    
-                    String phone = mPhoneEdit.getText().toString();
-                    mHomeLogic.requestSmsCode(phone,
-                            mImageValide,
-                            new OnResponseListener<JSONObject>()
-                            {
-                                @Override
-                                public void onStart(int what)
-                                {
-                                    
-                                }
-                                
-                                @Override
-                                public void onSucceed(int what,
-                                        Response<JSONObject> response)
-                                {
-                                    JSONObject result = response.get();
-                                    
-                                    Log.d(TAG,
-                                            "login result = "
-                                                    + result.toString());
-                                }
-                                
-                                @Override
-                                public void onFailed(int what,
-                                        Response<JSONObject> response)
-                                {
-                                    Log.d(TAG,
-                                            "login result = "
-                                                    + response.responseCode());
-                                }
-                                
-                                @Override
-                                public void onFinish(int what)
-                                {
-                                    
-                                }
-                            });
-                    
-                    break;
+                startActivity(new Intent(FusionAction.REGIST_ACTION));
             }
-        }
+        });
+        
+        findViewById(R.id.to_fpwd).setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                
+            }
+        });
+        
+        findViewById(R.id.login_btn).setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                String phone = mUserNameEdit.getText().toString();
+                String pwd = mPwdEdit.getText().toString();
+                
+                mHomelogic.userLogin(phone,
+                        pwd,
+                        new OnResponseListener<JSONObject>()
+                        {
+                            @Override
+                            public void onStart(int what)
+                            {
+                                
+                            }
+                            
+                            @Override
+                            public void onSucceed(int what,
+                                    Response<JSONObject> response)
+                            {
+                                JSONObject result = response.get();
+                                
+                                try
+                                {
+                                    if (JsonUtil.isSuccess(result))
+                                    {
+                                        if (result.has("data"))
+                                        {
+                                            JSONObject data = result.getJSONObject("data");
+                                            
+                                            String name = data.getString("name");
+                                            String sid = data.getString("sid");
+                                            
+                                            Log.d(TAG, "login result = "
+                                                    + result.toString());
+                                            
+                                            Toast.makeText(LoginActivity.this,
+                                                    result.getString("message"),
+                                                    Toast.LENGTH_SHORT)
+                                                    .show();
+                                            
+                                            finish();
+                                        }
+                                    }
+                                }
+                                catch (JSONException e)
+                                {
+                                    e.printStackTrace();
+                                }
+                            }
+                            
+                            @Override
+                            public void onFailed(int what,
+                                    Response<JSONObject> response)
+                            {
+                                
+                            }
+                            
+                            @Override
+                            public void onFinish(int what)
+                            {
+                                
+                            }
+                        });
+            }
+        });
+        
     }
     
-    class TimeCount extends CountDownTimer
-    {
-        public TimeCount(long millisInFuture, long countDownInterval)
-        {
-            //参数依次为总时长,和计时的时间间隔
-            super(millisInFuture, countDownInterval);
-        }
-        
-        @Override
-        public void onFinish()
-        {
-            //计时完毕时触发  
-            mSmsBtn.setText(R.string.regist_send_sms_code);
-            mSmsBtn.setEnabled(true);
-        }
-        
-        @Override
-        public void onTick(long millisUntilFinished)
-        {
-            //计时过程显示  
-            mSmsBtn.setEnabled(false);
-            mSmsBtn.setText(millisUntilFinished / 1000
-                    + getResources().getString(R.string.regist_sms_count_down));
-        }
-    }
 }
