@@ -27,6 +27,8 @@ public class FusionAction {
 
     public static final String WEB_ACTION = "com.taihold.yuxiang.WEB_ACTION";
 
+
+
     public interface LoginExtra {
         String USERNAME = "username";
 
@@ -38,5 +40,31 @@ public class FusionAction {
     public interface WEB_KEY{
         String URL ="web_url";
         String TITLE ="web_title";
+        String VERTICLEMANTAINMENU="verticleMantainMenu.html";//汽修目录
+        String VERTICLEDETAILLIST="verticleDetailList.html";//汽修列表
+        String CARBEAUTYDETAIL="carBeautyDetail.html";//店铺详情
+        String CARBEAUTYORDERSUBMIT="carBeautyOrderSubmit";//需要调支付
+        String ROADRESCUEMENU="roadRescueMenu.html";//
+        String ROADRESCUE="roadRescue.html";//
+        String CARBEAUTY="carBeauty.html";//
+        String REPLACEMENTTIRES="replacementTires.html";//
+        String TYRELIST="tyreList.html";
+        String TYREDETAIL="tyreDetail.html";
+        String AUTOPARTSORDERSUBMIT="autoPartsOrderSubmit.html";//调用支付
+        String AUTOPARTS="autoParts.html";
+        String SECONDHANDCAR="secondHandCar.html";
+        String CARDETAIL="carDetail.html";
+        String SUBMITSUCCEED="submitSucceed.html";
+        String STORELIST="storeList.html";
+        String ADDRESSMGR="addressMgr.html";
+        String ADDADDRESS="addAddress.html";
+        String myorder="myOrder.html";
+        String ORDERDETAIL2="orderDetail2.html";
+        String ORDERDETAIL="orderDetail.html";
+        String ORDERDETAIL3="orderDetail3.html";
+        String MINECAR="mineCar.html";//
+        String MINESECONDHANDCAR="mineSecondHandCar.html";//
+        String MYCOLLECTION="myCollection.html";//
+        String cardCoupons="cardCoupons.html";//
     }
 }

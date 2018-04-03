@@ -4,12 +4,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.drawable.AnimationDrawable;
 import android.net.http.SslError;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.JavascriptInterface;
 import android.webkit.SslErrorHandler;
@@ -18,6 +20,7 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import com.taihold.yuxiangcar.R;
 import com.taihold.yuxiangcar.common.FusionAction;
@@ -35,11 +38,16 @@ public class WebActivity extends AppCompatActivity {
     public String TAG = "WebActivity";
     LinearLayout mLayout;
     private SharedPreferences sharedPreferences;
+    private ImageView mLoading,mLoadFailed;
+    private AnimationDrawable loadingDrawable;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_webview);
+        mLoading=findViewById(R.id.loading);
+        mLoadFailed=findViewById(R.id.load_failed);
+        loadingDrawable = (AnimationDrawable)mLoading.getDrawable();
         mLayout = findViewById(R.id.webview_layout);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         webView = new WebView(getApplicationContext());
@@ -87,18 +95,23 @@ public class WebActivity extends AppCompatActivity {
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
                 super.onPageStarted(view, url, favicon);
                 //设定加载的操作
+                loadingDrawable.start();//动画加载
+                mLoadFailed.setVisibility(View.GONE);
             }
 
             @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
                 //设定加载结束的操作
+                loadingDrawable.stop();//动画加载
+
             }
 
             @Override
             public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
                 super.onReceivedError(view, request, error);
                 //记在出错时,调用本地的页面展示如404
+                mLoadFailed.setVisibility(View.VISIBLE);
             }
 
             @Override
@@ -182,6 +195,7 @@ public class WebActivity extends AppCompatActivity {
         @Override
         @JavascriptInterface
         public void dialModel(String phone1, String phone2) {
+
         }
         @Override
         @JavascriptInterface

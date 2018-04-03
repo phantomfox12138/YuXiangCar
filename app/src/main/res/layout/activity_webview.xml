@@ -9,4 +9,17 @@
         android:id="@+id/webview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"></WebView>-->
+    <ImageView
+        android:id="@+id/loading"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/loading"
+        android:layout_gravity="center"/>
+    <ImageView
+        android:id="@+id/load_failed"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY"
+        android:src="@mipmap/load_failed"
+        android:visibility="gone" />
 </LinearLayout>
