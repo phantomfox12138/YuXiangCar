@@ -87,6 +87,8 @@ public class LoginActivity extends BaseActivity {
                                         if (result.has("data")) {
                                             JSONObject data = result.getJSONObject("data");
 
+
+
                                             String name = data.getString("name");
                                             String sid = data.getString("sid");
                                             Log.v(TAG,"############返回当前的sid####"+sid);
