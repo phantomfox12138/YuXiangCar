@@ -7,6 +7,7 @@ import android.webkit.JavascriptInterface;
  */
 
 public interface JsInterFace {
+
     @JavascriptInterface
     public void toHomepage();//回到首页
     @JavascriptInterface

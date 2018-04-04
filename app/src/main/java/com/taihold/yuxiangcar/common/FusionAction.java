@@ -31,7 +31,6 @@ public class FusionAction {
 
     public interface LoginExtra {
         String USERNAME = "username";
-
         String IMAGE_VALIDE = "image_valide";
 
         int IMAGE_CODE = BASE_CODE - 1;

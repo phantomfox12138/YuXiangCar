@@ -166,6 +166,7 @@ public class HomeFragment extends Fragment
         //二手车
         used_car_layout.setOnClickListener(new View.OnClickListener(){
 
+
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(),WebActivity.class);

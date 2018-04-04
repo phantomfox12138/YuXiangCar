@@ -10,6 +10,7 @@ import java.io.File;
  */
 
 public class toolUtil {
+
     private static  String TAG="toolUtil";
     public static String APP_CACAHE_DIRNAME = "yuxiangview";
     public static void clearWebCache(Context context)

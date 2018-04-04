@@ -91,7 +91,6 @@ public class LoginActivity extends BaseActivity {
 
                                             String name = data.getString("name");
                                             String sid = data.getString("sid");
-                                            Log.v(TAG,"############返回当前的sid####"+sid);
                                             sharedPreferences.edit()
                                                     .putString("sid", sid)
                                                     .putString("loginName",
