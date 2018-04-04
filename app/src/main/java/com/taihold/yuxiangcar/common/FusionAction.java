@@ -44,7 +44,7 @@ public class FusionAction {
         String VERTICLEDETAILLIST="verticleDetailList.html";//汽修列表
         String CARBEAUTYDETAIL="carBeautyDetail.html";//店铺详情
         String CARBEAUTYORDERSUBMIT="carBeautyOrderSubmit";//需要调支付
-        String ROADRESCUEMENU="roadRescueMenu.html";//
+        String ROADRESCUEMENU="roadRescueMenu.html";//道路救援目录
         String ROADRESCUE="roadRescue.html";//
         String CARBEAUTY="carBeauty.html";//
         String REPLACEMENTTIRES="replacementTires.html";//

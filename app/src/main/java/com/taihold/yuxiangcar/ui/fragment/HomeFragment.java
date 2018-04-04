@@ -1,6 +1,7 @@
 package com.taihold.yuxiangcar.ui.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.media.Image;
 import android.os.Bundle;
@@ -10,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.daimajia.slider.library.Animations.DescriptionAnimation;
@@ -19,11 +21,15 @@ import com.daimajia.slider.library.SliderTypes.DefaultSliderView;
 import com.daimajia.slider.library.SliderTypes.TextSliderView;
 import com.paradoxie.autoscrolltextview.VerticalTextview;
 import com.taihold.yuxiangcar.R;
+import com.taihold.yuxiangcar.common.FusionAction;
+import com.taihold.yuxiangcar.logic.HttpHelper;
 import com.taihold.yuxiangcar.model.StarModel;
+import com.taihold.yuxiangcar.ui.activity.WebActivity;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.function.Function;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -39,7 +45,9 @@ public class HomeFragment extends Fragment
     private SwipeMenuRecyclerView mStarList;
     
     private List<StarModel> mStarDataList;
-    
+    private RelativeLayout automobile_layout,road_rescue_layout,
+            cosmetology_layout,change_the_tires_layout,
+            auto_parts_layout,used_car_layout,reserved_parking_layout,car_friend_layout;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState)
@@ -56,7 +64,15 @@ public class HomeFragment extends Fragment
         mHomeSlider = mRootView.findViewById(R.id.slider);
         mInfoText = mRootView.findViewById(R.id.home_information);
         mStarList = mRootView.findViewById(R.id.star_list);
-        
+
+        automobile_layout=mRootView.findViewById(R.id.automobile_layout);
+        road_rescue_layout=mRootView.findViewById(R.id.road_rescue_layout);
+        cosmetology_layout=mRootView.findViewById(R.id.cosmetology_layout);
+        change_the_tires_layout=mRootView.findViewById(R.id.change_the_tires_layout);
+        used_car_layout=mRootView.findViewById(R.id.used_car_layout);
+        auto_parts_layout=mRootView.findViewById(R.id.auto_parts_layout);
+        reserved_parking_layout=mRootView.findViewById(R.id.reserved_parking_layout);
+        car_friend_layout=mRootView.findViewById(R.id.car_friend_layout);
         HashMap<String, Integer> file_maps = new HashMap<String, Integer>();
         file_maps.put("Hannibal", R.mipmap.hannibal);
         file_maps.put("Big Bang Theory", R.mipmap.bigbang);
@@ -93,7 +109,83 @@ public class HomeFragment extends Fragment
             @Override
             public void onItemClick(int position)
             {
-                
+            }
+        });
+        //汽修
+        automobile_layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(),WebActivity.class);
+                intent.putExtra(FusionAction.WEB_KEY.URL, HttpHelper.HTTP_WEBURL+FusionAction.WEB_KEY.VERTICLEMANTAINMENU);
+                intent.putExtra(FusionAction.WEB_KEY.TITLE,"汽修");
+                startActivity(intent);
+            }
+        });
+        //道路救援
+        road_rescue_layout.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(),WebActivity.class);
+                intent.putExtra(FusionAction.WEB_KEY.URL,HttpHelper.HTTP_WEBURL+FusionAction.WEB_KEY.ROADRESCUEMENU);
+                intent.putExtra(FusionAction.WEB_KEY.TITLE,"道路救援");
+                startActivity(intent);
+
+            }
+        });
+        //汽车美容
+        cosmetology_layout.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(FusionAction.WEB_ACTION);
+                intent.putExtra(FusionAction.WEB_KEY.URL,HttpHelper.HTTP_WEBURL+FusionAction.WEB_KEY.CARBEAUTY);
+                intent.putExtra(FusionAction.WEB_KEY.TITLE,"汽车美容");
+                startActivity(intent);
+            }
+        });
+        //更换轮胎
+        change_the_tires_layout.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(),WebActivity.class);
+                intent.putExtra(FusionAction.WEB_KEY.URL,HttpHelper.HTTP_WEBURL+FusionAction.WEB_KEY.REPLACEMENTTIRES);
+                intent.putExtra(FusionAction.WEB_KEY.TITLE,"更换轮胎");
+                startActivity(intent);
+            }
+        });
+        //汽车配件
+        auto_parts_layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(),WebActivity.class);
+                intent.putExtra(FusionAction.WEB_KEY.URL,HttpHelper.HTTP_WEBURL+FusionAction.WEB_KEY.AUTOPARTS);
+                intent.putExtra(FusionAction.WEB_KEY.TITLE,"汽车配件");
+                startActivity(intent);
+            }
+        });
+        //二手车
+        used_car_layout.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(),WebActivity.class);
+                intent.putExtra(FusionAction.WEB_KEY.URL,HttpHelper.HTTP_WEBURL+FusionAction.WEB_KEY.SECONDHANDCAR);
+                intent.putExtra(FusionAction.WEB_KEY.TITLE,"二手车");
+                startActivity(intent);
+            }
+        });
+        //预约停车
+        reserved_parking_layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+        //车友宝典
+        car_friend_layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
             }
         });
         

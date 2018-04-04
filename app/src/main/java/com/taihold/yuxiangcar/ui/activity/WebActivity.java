@@ -7,9 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.AnimationDrawable;
 import android.net.http.SslError;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,15 +20,16 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import com.taihold.yuxiangcar.R;
 import com.taihold.yuxiangcar.common.FusionAction;
+import com.taihold.yuxiangcar.logic.HttpHelper;
 import com.taihold.yuxiangcar.util.JsInterFace;
 import com.taihold.yuxiangcar.util.NetWorkUtil;
 import com.taihold.yuxiangcar.util.toolUtil;
 /**
  * Created by jxy on 2018/4/3.
  */
-
 public class WebActivity extends AppCompatActivity {
     WebView webView;
     WebSettings mWebSettings;
@@ -40,19 +39,26 @@ public class WebActivity extends AppCompatActivity {
     private SharedPreferences sharedPreferences;
     private ImageView mLoading,mLoadFailed;
     private AnimationDrawable loadingDrawable;
+    private TextView web_title;
+    private LinearLayout title_bar_layout;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_webview);
-        mLoading=findViewById(R.id.loading);
+        webView=findViewById(R.id.webview);
+       // mLoading=findViewById(R.id.loading);
         mLoadFailed=findViewById(R.id.load_failed);
-        loadingDrawable = (AnimationDrawable)mLoading.getDrawable();
-        mLayout = findViewById(R.id.webview_layout);
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        webView = new WebView(getApplicationContext());
-        webView.setLayoutParams(params);
-        mLayout.addView(webView);
+        web_title=(TextView)findViewById(R.id.web_title);
+        title_bar_layout=(LinearLayout)findViewById(R.id.title_bar_layout);
+       // title_bar_layout.getBackground().setAlpha(100);
+
+        //loadingDrawable = (AnimationDrawable)mLoading.getDrawable();
+        //mLayout = findViewById(R.id.webview_layout);
+        // LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        // webView = new WebView(getApplicationContext());
+        ////  webView.setLayoutParams(params);
+        // mLayout.addView(webView);
         mWebSettings = webView.getSettings();
         //与JS交互
         mWebSettings.setJavaScriptEnabled(true);
@@ -82,20 +88,19 @@ public class WebActivity extends AppCompatActivity {
         sharedPreferences=getSharedPreferences("YuXData",MODE_PRIVATE);
         webView.addJavascriptInterface(new AndroidJS(this),"JSHook");
         //加载网页
+        web_title.setText(getIntent().getStringExtra(FusionAction.WEB_KEY.TITLE));
         webView.loadUrl(getIntent().getStringExtra(FusionAction.WEB_KEY.URL));
-        webView.setWebViewClient(new WebViewClient() {
+        webView.setWebViewClient(new WebViewClient(){
             @Override
-            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request){
                 view.loadUrl(request.getUrl().toString());
-                Log.v(TAG, "############打印当前的url" + request.getUrl());
                 return true;
             }
-
             @Override
-            public void onPageStarted(WebView view, String url, Bitmap favicon) {
+            public void onPageStarted(WebView view, String url, Bitmap favicon){
                 super.onPageStarted(view, url, favicon);
                 //设定加载的操作
-                loadingDrawable.start();//动画加载
+               // loadingDrawable.start();//动画加载
                 mLoadFailed.setVisibility(View.GONE);
             }
 
@@ -103,10 +108,9 @@ public class WebActivity extends AppCompatActivity {
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
                 //设定加载结束的操作
-                loadingDrawable.stop();//动画加载
+              //  loadingDrawable.stop();//动画加载
 
             }
-
             @Override
             public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
                 super.onReceivedError(view, request, error);
@@ -130,7 +134,6 @@ public class WebActivity extends AppCompatActivity {
             webView.goBack();
             return true;
         }
-
         return super.onKeyDown(keyCode, event);
     }
 
@@ -151,19 +154,25 @@ public class WebActivity extends AppCompatActivity {
             this.context = context;
 
         }
+
         @Override
         @JavascriptInterface
         public void openNewActivity(String title, String url){
-            Intent intent = new Intent(FusionAction.WEB_ACTION);
-            intent.putExtra(FusionAction.WEB_KEY.URL, url);
-            intent.putExtra(FusionAction.WEB_KEY.TITLE, title);
+            Intent intent = new Intent(getApplicationContext(),WebActivity.class);
+            intent.putExtra(FusionAction.WEB_KEY.URL, HttpHelper.HTTP_WEBURL+url);
+            intent.putExtra(FusionAction.WEB_KEY.TITLE,title);
             toolUtil.clearWebCache(WebActivity.this);
             context.startActivity(intent);
         }
         @Override
         @JavascriptInterface
-        public void openTransTitleActivity(String title, String url) {
-
+        public void openTransTitleActivity(String url){
+            Intent intent = new Intent(getApplicationContext(),WebActivity.class);
+            intent.putExtra(FusionAction.WEB_KEY.URL, HttpHelper.HTTP_WEBURL+url);
+            intent.putExtra(FusionAction.WEB_KEY.TITLE,"");
+            toolUtil.clearWebCache(WebActivity.this);
+            title_bar_layout.setVisibility(View.GONE);
+            context.startActivity(intent);
         }
 
         @Override
@@ -171,6 +180,11 @@ public class WebActivity extends AppCompatActivity {
         public String getUserName() {
             String userName = sharedPreferences.getString("loginName", null);
             return userName;
+        }
+
+        @Override
+        public void goBack() {
+
         }
 
         @Override
@@ -188,10 +202,9 @@ public class WebActivity extends AppCompatActivity {
 
         @Override
         @JavascriptInterface
-        public void setTitle(String title) {
-           WebActivity.this.setTitle(title);
-        }
+        public void setTitle(String title){
 
+        }
         @Override
         @JavascriptInterface
         public void dialModel(String phone1, String phone2) {
@@ -205,17 +218,85 @@ public class WebActivity extends AppCompatActivity {
 
         @Override
         @JavascriptInterface
-        public void jumpMap(String latitude, String longitude) {
+        public void weiPayFor() {
+
         }
 
         @Override
         @JavascriptInterface
-        public void backToHomepage(){
+        public void alipayPayFor() {
+
         }
 
         @Override
-        public void getLocation() {
+        @JavascriptInterface
+        public void bankPayFor() {
 
         }
+
+        @Override
+        @JavascriptInterface
+        public void toReviewList(String id) {
+
+        }
+
+        @Override
+        @JavascriptInterface
+        public void toPublishCar() {
+
+        }
+
+        @Override
+        @JavascriptInterface
+        public void toEditCar(String id) {
+
+        }
+
+        @Override
+        @JavascriptInterface
+        public void isCollect(int type) {
+
+        }
+
+        @Override
+        @JavascriptInterface
+        public void toReviewPage(String imgUrl, String id) {
+
+        }
+        @Override
+        @JavascriptInterface
+        public void getMinePosition() {
+
+        }
+        @Override
+        @JavascriptInterface
+        public void modifyTitle(String title) {
+            web_title.setText(title);
+        }
+
+        @Override
+        @JavascriptInterface
+        public void toShare(){
+        }
+        @Override
+        @JavascriptInterface
+        public void finished() {
+        }
+        @Override
+        @JavascriptInterface
+        public void toHomepage(){
+
+        }
+        @Override
+        @JavascriptInterface
+        public void jumpMap(String latitude, String longitude) {
+        }
+        @Override
+        @JavascriptInterface
+        public void getLocation() {
+        }
     }
+
+
+
 }

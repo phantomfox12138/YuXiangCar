@@ -97,6 +97,7 @@
                     android:orientation="horizontal">
 
                     <RelativeLayout
+                        android:id="@+id/automobile_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1">
@@ -121,6 +122,7 @@
                     </RelativeLayout>
 
                     <RelativeLayout
+                        android:id="@+id/road_rescue_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1">
@@ -145,6 +147,7 @@
                     </RelativeLayout>
 
                     <RelativeLayout
+                        android:id="@+id/cosmetology_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1">
@@ -169,6 +172,7 @@
                     </RelativeLayout>
 
                     <RelativeLayout
+                        android:id="@+id/change_the_tires_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1">
@@ -198,8 +202,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
-
                     <RelativeLayout
+                        android:id="@+id/auto_parts_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1">
@@ -224,6 +228,7 @@
                     </RelativeLayout>
 
                     <RelativeLayout
+                        android:id="@+id/used_car_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1">
@@ -248,6 +253,7 @@
                     </RelativeLayout>
 
                     <RelativeLayout
+                        android:id="@+id/reserved_parking_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1">
@@ -272,6 +278,7 @@
                     </RelativeLayout>
 
                     <RelativeLayout
+                        android:id="@+id/car_friend_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1">
