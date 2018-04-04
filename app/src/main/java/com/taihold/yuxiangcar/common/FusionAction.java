@@ -36,7 +36,6 @@ public class FusionAction {
 
         int IMAGE_CODE = BASE_CODE - 1;
     }
-
     public interface WEB_KEY{
         String URL ="web_url";
         String TITLE ="web_title";
