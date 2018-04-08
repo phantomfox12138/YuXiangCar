@@ -39,7 +39,7 @@ public class MineFragment extends Fragment
             @Override
             public void onClick(View view)
             {
-                startActivity(new Intent(FusionAction.LOGIN_ACTION));
+                startActivity(new Intent(FusionAction.PROFILE_ACTION));
             }
         });
         mRootView.findViewById(R.id.setting_btn)

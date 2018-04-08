@@ -3,10 +3,10 @@ package com.taihold.yuxiangcar.ui.fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.media.Image;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,28 +14,33 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.amap.api.location.AMapLocation;
+import com.amap.api.location.AMapLocationClient;
+import com.amap.api.location.AMapLocationClientOption;
+import com.amap.api.location.AMapLocationListener;
 import com.daimajia.slider.library.Animations.DescriptionAnimation;
 import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.DefaultSliderView;
-import com.daimajia.slider.library.SliderTypes.TextSliderView;
 import com.paradoxie.autoscrolltextview.VerticalTextview;
 import com.taihold.yuxiangcar.R;
 import com.taihold.yuxiangcar.common.FusionAction;
 import com.taihold.yuxiangcar.logic.HttpHelper;
 import com.taihold.yuxiangcar.model.StarModel;
 import com.taihold.yuxiangcar.ui.activity.WebActivity;
+import com.taihold.yuxiangcar.util.Utlity;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.function.Function;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class HomeFragment extends Fragment
 {
+    private static final String TAG = "HomeFragment";
+    
     private View mRootView;
     
     private SliderLayout mHomeSlider;
@@ -45,9 +50,67 @@ public class HomeFragment extends Fragment
     private SwipeMenuRecyclerView mStarList;
     
     private List<StarModel> mStarDataList;
-    private RelativeLayout automobile_layout,road_rescue_layout,
-            cosmetology_layout,change_the_tires_layout,
-            auto_parts_layout,used_car_layout,reserved_parking_layout,car_friend_layout;
+    
+    private RelativeLayout mAutomobile;
+    
+    private RelativeLayout mRoadRescue;
+    
+    private RelativeLayout mCosmetology;
+    
+    private RelativeLayout mChangeTires;
+    
+    private RelativeLayout mAutoParts;
+    
+    private RelativeLayout mUsedCar;
+    
+    private RelativeLayout mReservedPark;
+    
+    private RelativeLayout mCarFriend;
+    
+    //    声明AMapLocationClient类对象
+    public AMapLocationClient mLocationClient = null;
+    
+    //声明AMapLocationClientOption对象
+    public AMapLocationClientOption mLocationOption = null;
+    
+    private double mLatitiude;
+    
+    private double mLongitude;
+    
+    //    声明定位回调监听器
+    public AMapLocationListener mLocationListener = new AMapLocationListener()
+    {
+        @Override
+        public void onLocationChanged(AMapLocation aMapLocation)
+        {
+            if (aMapLocation != null)
+            {
+                if (aMapLocation.getErrorCode() == 0)
+                {
+                    //可在其中解析amapLocation获取相应内容。
+                    mLatitiude = aMapLocation.getLatitude();//获取纬度
+                    mLongitude = aMapLocation.getLongitude();//获取经度
+                    
+                    //获取省市
+                    Utlity.saveCityAndProvince(getActivity(),
+                            aMapLocation.getCity(),
+                            aMapLocation.getProvince());
+                    
+                    Log.d(TAG, "latitiude = " + mLatitiude + " longitude = "
+                            + mLongitude);
+                    
+                }
+                else
+                {
+                    //定位失败时，可通过ErrCode（错误码）信息来确定失败的原因，errInfo是错误信息，详见错误码表。
+                    Log.e("AmapError", "location Error, ErrCode:"
+                            + aMapLocation.getErrorCode() + ", errInfo:"
+                            + aMapLocation.getErrorInfo());
+                }
+            }
+        }
+    };
+    
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState)
@@ -61,18 +124,33 @@ public class HomeFragment extends Fragment
     
     private void initView()
     {
+        //初始化定位
+        mLocationClient = new AMapLocationClient(
+                getActivity().getApplicationContext());
+        //设置定位回调监听
+        mLocationClient.setLocationListener(mLocationListener);
+        
+        //初始化AMapLocationClientOption对象
+        mLocationOption = new AMapLocationClientOption();
+        mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
+        //该方法默认为false。
+        mLocationOption.setOnceLocation(true);
+        
+        mLocationClient.setLocationOption(mLocationOption);
+        mLocationClient.startLocation();
+        
         mHomeSlider = mRootView.findViewById(R.id.slider);
         mInfoText = mRootView.findViewById(R.id.home_information);
         mStarList = mRootView.findViewById(R.id.star_list);
-
-        automobile_layout=mRootView.findViewById(R.id.automobile_layout);
-        road_rescue_layout=mRootView.findViewById(R.id.road_rescue_layout);
-        cosmetology_layout=mRootView.findViewById(R.id.cosmetology_layout);
-        change_the_tires_layout=mRootView.findViewById(R.id.change_the_tires_layout);
-        used_car_layout=mRootView.findViewById(R.id.used_car_layout);
-        auto_parts_layout=mRootView.findViewById(R.id.auto_parts_layout);
-        reserved_parking_layout=mRootView.findViewById(R.id.reserved_parking_layout);
-        car_friend_layout=mRootView.findViewById(R.id.car_friend_layout);
+        
+        mAutomobile = mRootView.findViewById(R.id.automobile_layout);
+        mRoadRescue = mRootView.findViewById(R.id.road_rescue_layout);
+        mCosmetology = mRootView.findViewById(R.id.cosmetology_layout);
+        mChangeTires = mRootView.findViewById(R.id.change_the_tires_layout);
+        mUsedCar = mRootView.findViewById(R.id.used_car_layout);
+        mAutoParts = mRootView.findViewById(R.id.auto_parts_layout);
+        mReservedPark = mRootView.findViewById(R.id.reserved_parking_layout);
+        mCarFriend = mRootView.findViewById(R.id.car_friend_layout);
         HashMap<String, Integer> file_maps = new HashMap<String, Integer>();
         file_maps.put("Hannibal", R.mipmap.hannibal);
         file_maps.put("Big Bang Theory", R.mipmap.bigbang);
@@ -112,81 +190,106 @@ public class HomeFragment extends Fragment
             }
         });
         //汽修
-        automobile_layout.setOnClickListener(new View.OnClickListener() {
+        mAutomobile.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getActivity(),WebActivity.class);
-                intent.putExtra(FusionAction.WEB_KEY.URL, HttpHelper.HTTP_WEBURL+FusionAction.WEB_KEY.VERTICLEMANTAINMENU);
-                intent.putExtra(FusionAction.WEB_KEY.TITLE,"汽修");
+            public void onClick(View view)
+            {
+                Intent intent = new Intent(getActivity(), WebActivity.class);
+                intent.putExtra(FusionAction.WEB_KEY.URL,
+                        HttpHelper.HTTP_WEBURL
+                                + FusionAction.WEB_KEY.VERTICLEMANTAINMENU);
+                intent.putExtra(FusionAction.WEB_KEY.TITLE, "汽修");
                 startActivity(intent);
             }
         });
         //道路救援
-        road_rescue_layout.setOnClickListener(new View.OnClickListener(){
-
+        mRoadRescue.setOnClickListener(new View.OnClickListener()
+        {
+            
             @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getActivity(),WebActivity.class);
-                intent.putExtra(FusionAction.WEB_KEY.URL,HttpHelper.HTTP_WEBURL+FusionAction.WEB_KEY.ROADRESCUEMENU);
-                intent.putExtra(FusionAction.WEB_KEY.TITLE,"道路救援");
+            public void onClick(View view)
+            {
+                Intent intent = new Intent(getActivity(), WebActivity.class);
+                intent.putExtra(FusionAction.WEB_KEY.URL,
+                        HttpHelper.HTTP_WEBURL
+                                + FusionAction.WEB_KEY.ROADRESCUEMENU);
+                intent.putExtra(FusionAction.WEB_KEY.TITLE, "道路救援");
                 startActivity(intent);
-
+                
             }
         });
         //汽车美容
-        cosmetology_layout.setOnClickListener(new View.OnClickListener(){
+        mCosmetology.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View view) {
+            public void onClick(View view)
+            {
                 Intent intent = new Intent(FusionAction.WEB_ACTION);
-                intent.putExtra(FusionAction.WEB_KEY.URL,HttpHelper.HTTP_WEBURL+FusionAction.WEB_KEY.CARBEAUTY);
-                intent.putExtra(FusionAction.WEB_KEY.TITLE,"汽车美容");
+                intent.putExtra(FusionAction.WEB_KEY.URL,
+                        HttpHelper.HTTP_WEBURL + FusionAction.WEB_KEY.CARBEAUTY);
+                intent.putExtra(FusionAction.WEB_KEY.TITLE, "汽车美容");
                 startActivity(intent);
             }
         });
         //更换轮胎
-        change_the_tires_layout.setOnClickListener(new View.OnClickListener(){
+        mChangeTires.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getActivity(),WebActivity.class);
-                intent.putExtra(FusionAction.WEB_KEY.URL,HttpHelper.HTTP_WEBURL+FusionAction.WEB_KEY.REPLACEMENTTIRES);
-                intent.putExtra(FusionAction.WEB_KEY.TITLE,"更换轮胎");
+            public void onClick(View view)
+            {
+                Intent intent = new Intent(getActivity(), WebActivity.class);
+                intent.putExtra(FusionAction.WEB_KEY.URL,
+                        HttpHelper.HTTP_WEBURL
+                                + FusionAction.WEB_KEY.REPLACEMENTTIRES);
+                intent.putExtra(FusionAction.WEB_KEY.TITLE, "更换轮胎");
                 startActivity(intent);
             }
         });
         //汽车配件
-        auto_parts_layout.setOnClickListener(new View.OnClickListener() {
+        mAutoParts.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getActivity(),WebActivity.class);
-                intent.putExtra(FusionAction.WEB_KEY.URL,HttpHelper.HTTP_WEBURL+FusionAction.WEB_KEY.AUTOPARTS);
-                intent.putExtra(FusionAction.WEB_KEY.TITLE,"汽车配件");
+            public void onClick(View view)
+            {
+                Intent intent = new Intent(getActivity(), WebActivity.class);
+                intent.putExtra(FusionAction.WEB_KEY.URL,
+                        HttpHelper.HTTP_WEBURL + FusionAction.WEB_KEY.AUTOPARTS);
+                intent.putExtra(FusionAction.WEB_KEY.TITLE, "汽车配件");
                 startActivity(intent);
             }
         });
         //二手车
-        used_car_layout.setOnClickListener(new View.OnClickListener(){
-
-
+        mUsedCar.setOnClickListener(new View.OnClickListener()
+        {
+            
             @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getActivity(),WebActivity.class);
-                intent.putExtra(FusionAction.WEB_KEY.URL,HttpHelper.HTTP_WEBURL+FusionAction.WEB_KEY.SECONDHANDCAR);
-                intent.putExtra(FusionAction.WEB_KEY.TITLE,"二手车");
+            public void onClick(View view)
+            {
+                Intent intent = new Intent(getActivity(), WebActivity.class);
+                intent.putExtra(FusionAction.WEB_KEY.URL,
+                        HttpHelper.HTTP_WEBURL
+                                + FusionAction.WEB_KEY.SECONDHANDCAR);
+                intent.putExtra(FusionAction.WEB_KEY.TITLE, "二手车");
                 startActivity(intent);
             }
         });
         //预约停车
-        reserved_parking_layout.setOnClickListener(new View.OnClickListener() {
+        mReservedPark.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View view) {
-
+            public void onClick(View view)
+            {
+                
             }
         });
         //车友宝典
-        car_friend_layout.setOnClickListener(new View.OnClickListener() {
+        mCarFriend.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View view) {
-
+            public void onClick(View view)
+            {
+                
             }
         });
         
