@@ -23,7 +23,7 @@
     <!--用于申请获取蓝牙信息进行室内定位-->
     <uses-permission android:name="android.permission.BLUETOOTH"></uses-permission>
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"></uses-permission>
-
+    <uses-permission android:name="android.permission.CALL_PHONE"></uses-permission>
     <application
         android:name=".ui.activity.YXApplication"
         android:allowBackup="true"
@@ -147,6 +147,15 @@
             <intent-filter>
                 <action android:name="com.taihold.yuxiang.REGIST_ACTION" />
 
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ui.activity.WebActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+            <intent-filter>
+                <action android:name="com.taihold.yuxiang.WEB_ACTION" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>

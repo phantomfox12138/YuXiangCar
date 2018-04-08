@@ -6,16 +6,15 @@ import android.webkit.JavascriptInterface;
  * Created by jxy on 2018/4/3.
  */
 
-public interface JsInterFace {
-
+public interface JsInterface {
     @JavascriptInterface
     public void toHomepage();//回到首页
     @JavascriptInterface
     public void jumpMap(String latitude, String longitude);////打开地图
     @JavascriptInterface
-    public void getLocation();//获取用户的当前位置
+    public String getLocation();//获取用户的当前位置
     @JavascriptInterface
-    public void dialModel(final String phone1, String phone2);//拨打电话
+    public void dialModel(String phone);//拨打电话
     @JavascriptInterface
     public String getUserId();//获取登录用户id
     @JavascriptInterface
@@ -49,7 +48,7 @@ public interface JsInterFace {
     @JavascriptInterface
     public void toReviewPage(String imgUrl,String id);//跳转到添加评价页面
     @JavascriptInterface
-    public void getMinePosition();//获取当前详细定位。准确到街道roadRescue.html
+    public String getMinePosition();//获取当前详细定位。准确到街道roadRescue.html
     @JavascriptInterface
     public void modifyTitle(String title);//修改导航栏title
     @JavascriptInterface

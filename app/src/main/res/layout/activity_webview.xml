@@ -3,7 +3,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-
     >
     <LinearLayout
         android:id="@+id/title_bar_layout"
@@ -27,10 +26,32 @@
                 android:layout_centerInParent="true"
                 android:textColor="#444"
                 android:textSize="@dimen/sp_18"
+                android:text="昵称"
                 />
+            <TextView
+                android:id="@+id/web_right"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:padding="@dimen/dp_16"
+                android:textColor="#f24f42"
+                android:textSize="@dimen/sp_18"
+                android:text="保存"
+                android:visibility="gone"
+                />
+               <ImageView
+                   android:id="@+id/web_right_image"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:layout_alignParentRight="true"
+                   android:layout_centerVertical="true"
+                   android:layout_margin="@dimen/dp_16"
+                   android:background="@mipmap/collection_select"
+                   android:scaleType="center"
+                   android:visibility="gone"
+                   />
         </RelativeLayout>
-
-
 
     </LinearLayout>
     <!-- 显示网页区域 -->

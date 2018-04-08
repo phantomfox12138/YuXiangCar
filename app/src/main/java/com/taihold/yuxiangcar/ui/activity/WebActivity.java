@@ -5,14 +5,18 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.drawable.AnimationDrawable;
+import android.net.Uri;
 import android.net.http.SslError;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.JavascriptInterface;
 import android.webkit.SslErrorHandler;
+import android.webkit.ValueCallback;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
@@ -21,12 +25,14 @@ import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import com.taihold.yuxiangcar.R;
 import com.taihold.yuxiangcar.common.FusionAction;
 import com.taihold.yuxiangcar.logic.HttpHelper;
-import com.taihold.yuxiangcar.util.JsInterFace;
+import com.taihold.yuxiangcar.util.JsInterface;
 import com.taihold.yuxiangcar.util.NetWorkUtil;
 import com.taihold.yuxiangcar.util.toolUtil;
+
 /**
  * Created by jxy on 2018/4/3.
  */
@@ -35,30 +41,34 @@ public class WebActivity extends AppCompatActivity {
     WebSettings mWebSettings;
     public static String APP_CACAHE_DIRNAME = "yuxiangview";
     public String TAG = "WebActivity";
-    LinearLayout mLayout;
     private SharedPreferences sharedPreferences;
-    private ImageView mLoading,mLoadFailed;
+    private ImageView mLoading, mLoadFailed;
     private AnimationDrawable loadingDrawable;
-    private TextView web_title;
-    private LinearLayout title_bar_layout;
+    private TextView webTitle, webRight;
+    private ImageView webBack, webRightImage;
+    private LinearLayout titleBarLayout;
+    private int andVersion = 0;
+    private String currentUrl = "";
+    private int isCollectType = 0;//1表示收藏,0表示未收藏
+    private String secondCarId;//二手车id
+    private String toReviewId = "";//跳到评价页面
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_webview);
-        webView=findViewById(R.id.webview);
-       // mLoading=findViewById(R.id.loading);
-        mLoadFailed=findViewById(R.id.load_failed);
-        web_title=(TextView)findViewById(R.id.web_title);
-        title_bar_layout=(LinearLayout)findViewById(R.id.title_bar_layout);
-       // title_bar_layout.getBackground().setAlpha(100);
+        andVersion = Build.VERSION.SDK_INT;
+        webView = findViewById(R.id.webview);
+        webBack = findViewById(R.id.web_back);
+        // mLoading=findViewById(R.id.loading);
+        mLoadFailed = findViewById(R.id.load_failed);
+        webTitle = findViewById(R.id.web_title);
+        titleBarLayout = findViewById(R.id.title_bar_layout);
+        //右面的设置文字的按钮[发布,保存]
+        webRight = findViewById(R.id.web_right);
+        webRightImage = findViewById(R.id.web_right_image);
+        //loadingDrawable =mLoading.getDrawable();
 
-        //loadingDrawable = (AnimationDrawable)mLoading.getDrawable();
-        //mLayout = findViewById(R.id.webview_layout);
-        // LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        // webView = new WebView(getApplicationContext());
-        ////  webView.setLayoutParams(params);
-        // mLayout.addView(webView);
         mWebSettings = webView.getSettings();
         //与JS交互
         mWebSettings.setJavaScriptEnabled(true);
@@ -85,22 +95,34 @@ public class WebActivity extends AppCompatActivity {
         mWebSettings.setAppCacheEnabled(true);
         String cacheDirPath = getFilesDir().getAbsolutePath() + APP_CACAHE_DIRNAME;
         mWebSettings.setAppCachePath(cacheDirPath);//设置Application Caches 缓存目录
-        sharedPreferences=getSharedPreferences("YuXData",MODE_PRIVATE);
-        webView.addJavascriptInterface(new AndroidJS(this),"JSHook");
+        sharedPreferences = getSharedPreferences("YuXData", MODE_PRIVATE);
+        //JS调用Android的方法
+        webView.addJavascriptInterface(new AndroidJS(this), "JSHook");
         //加载网页
-        web_title.setText(getIntent().getStringExtra(FusionAction.WEB_KEY.TITLE));
+        if (getIntent().getStringExtra(FusionAction.WEB_KEY.VISIBLE) == null) {//默认展示
+            titleBarLayout.setVisibility(View.VISIBLE);
+        } else if (getIntent().getStringExtra(FusionAction.WEB_KEY.VISIBLE).equals("1")) {
+            //显示导航栏
+            titleBarLayout.setVisibility(View.VISIBLE);
+        } else if (getIntent().getStringExtra(FusionAction.WEB_KEY.VISIBLE).equals("0")) {
+            titleBarLayout.setVisibility(View.GONE);
+        }
+        webTitle.setText(getIntent().getStringExtra(FusionAction.WEB_KEY.TITLE));
         webView.loadUrl(getIntent().getStringExtra(FusionAction.WEB_KEY.URL));
-        webView.setWebViewClient(new WebViewClient(){
+        currentUrl = getIntent().getStringExtra(FusionAction.WEB_KEY.URL);
+        webView.setWebViewClient(new WebViewClient() {
             @Override
-            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request){
+            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+                Log.v(TAG, "#######1111#####" + request.getUrl().toString());
                 view.loadUrl(request.getUrl().toString());
                 return true;
             }
+
             @Override
-            public void onPageStarted(WebView view, String url, Bitmap favicon){
+            public void onPageStarted(WebView view, String url, Bitmap favicon) {
                 super.onPageStarted(view, url, favicon);
                 //设定加载的操作
-               // loadingDrawable.start();//动画加载
+                // loadingDrawable.start();//动画加载
                 mLoadFailed.setVisibility(View.GONE);
             }
 
@@ -108,9 +130,10 @@ public class WebActivity extends AppCompatActivity {
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
                 //设定加载结束的操作
-              //  loadingDrawable.stop();//动画加载
+                //  loadingDrawable.stop();//动画加载
 
             }
+
             @Override
             public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
                 super.onReceivedError(view, request, error);
@@ -122,6 +145,84 @@ public class WebActivity extends AppCompatActivity {
             public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
                 super.onReceivedSslError(view, handler, error);
                 //处理https请求,webview默认是不处理https请求
+            }
+        });
+        //设置左面返回按钮
+        webBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (webView.canGoBack()) {
+                    webView.goBack();
+                } else {
+                    finish();
+                }
+            }
+        });
+
+        //设置右面按钮的文字
+        webRight.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //根据title的不同,去变换调用js的接口
+                if (currentUrl.indexOf("addAddress.html") != -1) {
+                    //新增地址-保存
+                    if (andVersion < 18) {
+                        webView.loadUrl("javascript:toApply()");
+                    } else {
+                        webView.evaluateJavascript("javascript:toApply()", new ValueCallback<String>() {
+                            @Override
+                            public void onReceiveValue(String value) {
+                                //此处为js 返回的结果
+                            }
+                        });
+                    }
+                } else if (currentUrl.indexOf("addressMgr.html") != -1) {
+                    //地址管理-新增
+                    if (andVersion < 18) {
+                        webView.loadUrl("javascript:toAddress()");
+                    } else {
+                        webView.evaluateJavascript("javascript:toAddress()", new ValueCallback<String>() {
+                            @Override
+                            public void onReceiveValue(String value) {
+                                //此处为js 返回的结果
+                            }
+                        });
+                    }
+
+                } else if (currentUrl.indexOf("carDetail.html") != -1) {
+                    if (andVersion < 18) {
+                        webView.loadUrl("javascript:toCollect()");
+                    } else {
+                        webView.evaluateJavascript("javascript:toCollect()", new ValueCallback<String>() {
+                            @Override
+                            public void onReceiveValue(String value) {
+                                //此处为js 返回的结果
+                            }
+                        });
+                    }
+                } else if (false) {
+                    if (andVersion < 18) {
+                        webView.loadUrl("javascript:isShowIcon()");
+                    } else {
+                        webView.evaluateJavascript("javascript:isShowIcon()", new ValueCallback<String>() {
+                            @Override
+                            public void onReceiveValue(String value) {
+                                //此处为js 返回的结果
+                            }
+                        });
+                    }
+                } else if (false) {//关闭弹框
+                    if (andVersion < 18) {
+                        webView.loadUrl("javascript:closeModel()");
+                    } else {
+                        webView.evaluateJavascript("javascript:closeModel()", new ValueCallback<String>() {
+                            @Override
+                            public void onReceiveValue(String value) {
+                                //此处为js 返回的结果
+                            }
+                        });
+                    }
+                }
             }
         });
 
@@ -147,31 +248,36 @@ public class WebActivity extends AppCompatActivity {
         }
         super.onDestroy();
     }
-    class  AndroidJS implements JsInterFace {
+
+    class AndroidJS implements JsInterface {
         private Context context;
-        public AndroidJS(Context context)
-        {
+
+        public AndroidJS(Context context) {
             this.context = context;
 
         }
 
         @Override
         @JavascriptInterface
-        public void openNewActivity(String title, String url){
-            Intent intent = new Intent(getApplicationContext(),WebActivity.class);
-            intent.putExtra(FusionAction.WEB_KEY.URL, HttpHelper.HTTP_WEBURL+url);
-            intent.putExtra(FusionAction.WEB_KEY.TITLE,title);
+        public void openNewActivity(String title, String url) {
+            Intent intent = new Intent(getApplicationContext(), WebActivity.class);
+            intent.putExtra(FusionAction.WEB_KEY.URL, HttpHelper.HTTP_WEBURL + url);
+            intent.putExtra(FusionAction.WEB_KEY.TITLE, title);
+            intent.putExtra(FusionAction.WEB_KEY.VISIBLE, "1");
             toolUtil.clearWebCache(WebActivity.this);
+            titleBarLayout.setVisibility(View.VISIBLE);
             context.startActivity(intent);
         }
+
         @Override
         @JavascriptInterface
-        public void openTransTitleActivity(String url){
-            Intent intent = new Intent(getApplicationContext(),WebActivity.class);
-            intent.putExtra(FusionAction.WEB_KEY.URL, HttpHelper.HTTP_WEBURL+url);
-            intent.putExtra(FusionAction.WEB_KEY.TITLE,"");
+        public void openTransTitleActivity(String url) {//打开新页面（针对要有透明导航栏的页面）
+            Log.v(TAG, "##########透明啊");
+            Intent intent = new Intent(getApplicationContext(), WebActivity.class);
+            intent.putExtra(FusionAction.WEB_KEY.URL, HttpHelper.HTTP_WEBURL + url);
+            intent.putExtra(FusionAction.WEB_KEY.TITLE, "");
             toolUtil.clearWebCache(WebActivity.this);
-            title_bar_layout.setVisibility(View.GONE);
+            intent.putExtra(FusionAction.WEB_KEY.VISIBLE, "0");
             context.startActivity(intent);
         }
 
@@ -184,7 +290,9 @@ public class WebActivity extends AppCompatActivity {
 
         @Override
         public void goBack() {
-
+            if (webView.canGoBack()) {
+                webView.goBack();//返回上个页面
+            }
         }
 
         @Override
@@ -202,18 +310,24 @@ public class WebActivity extends AppCompatActivity {
 
         @Override
         @JavascriptInterface
-        public void setTitle(String title){
+        public void setTitle(String title) {
 
         }
+
         @Override
         @JavascriptInterface
-        public void dialModel(String phone1, String phone2) {
-
+        public void dialModel(String phone) {
+            Intent intent1 = new Intent(Intent.ACTION_DIAL);
+            intent1.setData(Uri.parse("tel:" + phone));
+            startActivity(intent1);
         }
+
         @Override
         @JavascriptInterface
         public void finish() {
-            finish();
+            if (webView.canGoBack()) {
+                webView.goBack();
+            }
         }
 
         @Override
@@ -237,25 +351,26 @@ public class WebActivity extends AppCompatActivity {
         @Override
         @JavascriptInterface
         public void toReviewList(String id) {
-
+            //跳到评价页面
+            toReviewId = id;
         }
 
         @Override
         @JavascriptInterface
         public void toPublishCar() {
-
+            webView.loadUrl(FusionAction.WEB_KEY.SECONDHANDCAR);
         }
 
         @Override
         @JavascriptInterface
         public void toEditCar(String id) {
-
+            secondCarId = id;
         }
 
         @Override
         @JavascriptInterface
         public void isCollect(int type) {
-
+            isCollectType = type;
         }
 
         @Override
@@ -263,40 +378,52 @@ public class WebActivity extends AppCompatActivity {
         public void toReviewPage(String imgUrl, String id) {
 
         }
+
         @Override
         @JavascriptInterface
-        public void getMinePosition() {
-
+        public String getMinePosition() {
+            String detailAddress = sharedPreferences.getString("detailAddress", null);
+            return detailAddress;
         }
+
         @Override
         @JavascriptInterface
         public void modifyTitle(String title) {
-            web_title.setText(title);
+            webTitle.setText(title);
         }
 
         @Override
         @JavascriptInterface
-        public void toShare(){
+        public void toShare() {
         }
+
         @Override
         @JavascriptInterface
         public void finished() {
         }
+
         @Override
         @JavascriptInterface
-        public void toHomepage(){
-
+        public void toHomepage() {
+            startActivity(new Intent(FusionAction.HOME_ACTION));
+            finish();
         }
+
         @Override
         @JavascriptInterface
         public void jumpMap(String latitude, String longitude) {
+            //跳转到高德地图导航
         }
+
         @Override
         @JavascriptInterface
-        public void getLocation() {
+        public String getLocation() {
+            String latitiude = sharedPreferences.getString("latitiude", null);
+            String longitude = sharedPreferences.getString("longitude", null);
+            String city = sharedPreferences.getString("city", null);
+            return latitiude + "," + longitude + "," + city;
         }
     }
-
 
 
 }

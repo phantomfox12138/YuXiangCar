@@ -38,6 +38,7 @@ public class FusionAction {
     public interface WEB_KEY{
         String URL ="web_url";
         String TITLE ="web_title";
+        String VISIBLE="web_visible";
         String VERTICLEMANTAINMENU="verticleMantainMenu.html";//汽修目录
         String VERTICLEDETAILLIST="verticleDetailList.html";//汽修列表
         String CARBEAUTYDETAIL="carBeautyDetail.html";//店铺详情
@@ -64,5 +65,6 @@ public class FusionAction {
         String MINESECONDHANDCAR="mineSecondHandCar.html";//
         String MYCOLLECTION="myCollection.html";//
         String cardCoupons="cardCoupons.html";//
+
     }
 }
