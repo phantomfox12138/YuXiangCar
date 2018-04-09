@@ -39,6 +39,9 @@ public class FusionAction {
         String URL ="web_url";
         String TITLE ="web_title";
         String VISIBLE="web_visible";
+
+
+
         String VERTICLEMANTAINMENU="verticleMantainMenu.html";//汽修目录
         String VERTICLEDETAILLIST="verticleDetailList.html";//汽修列表
         String CARBEAUTYDETAIL="carBeautyDetail.html";//店铺详情

@@ -11,7 +11,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.KeyEvent;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.JavascriptInterface;
@@ -32,6 +34,8 @@ import com.taihold.yuxiangcar.logic.HttpHelper;
 import com.taihold.yuxiangcar.util.JsInterface;
 import com.taihold.yuxiangcar.util.NetWorkUtil;
 import com.taihold.yuxiangcar.util.toolUtil;
+import com.xander.panel.PanelInterface;
+import com.xander.panel.XanderPanel;
 
 /**
  * Created by jxy on 2018/4/3.
@@ -409,6 +413,18 @@ public class WebActivity extends AppCompatActivity {
         @Override
         @JavascriptInterface
         public void toShare() {
+            XanderPanel.Builder mBuilder = new XanderPanel.Builder(WebActivity.this);
+            mBuilder.grid(1, 3)
+                    .setMenu(R.menu.main_menu, new PanelInterface.PanelMenuListener() {
+                        @Override
+                        public void onMenuClick(MenuItem menuItem) {
+
+                        }
+                    })
+                    .setGravity(Gravity.TOP)
+                    .setCanceledOnTouchOutside(true);
+            XanderPanel xanderPanel = mBuilder.create();
+            xanderPanel.show();
         }
         @Override
         @JavascriptInterface
