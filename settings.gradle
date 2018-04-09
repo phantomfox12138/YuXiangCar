@@ -1,1 +1,1 @@
-include ':app', ':autoscrolltextview'
+include ':app', ':autoscrolltextview',":xanderpanel"
