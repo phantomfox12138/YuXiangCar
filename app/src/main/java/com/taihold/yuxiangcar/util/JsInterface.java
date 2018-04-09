@@ -30,7 +30,7 @@ public interface JsInterface {
     @JavascriptInterface
     public void setTitle(String title);//设置标题
     @JavascriptInterface
-    public void finish();//关闭页签
+    public void finish11();//关闭页签
     @JavascriptInterface
     public void weiPayFor();//微信支付
     @JavascriptInterface

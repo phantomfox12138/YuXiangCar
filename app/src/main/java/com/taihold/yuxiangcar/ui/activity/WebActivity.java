@@ -98,6 +98,8 @@ public class WebActivity extends AppCompatActivity {
         sharedPreferences = getSharedPreferences("YuXData", MODE_PRIVATE);
         //JS调用Android的方法
         webView.addJavascriptInterface(new AndroidJS(this), "JSHook");
+
+
         //加载网页
         if (getIntent().getStringExtra(FusionAction.WEB_KEY.VISIBLE) == null) {//默认展示
             titleBarLayout.setVisibility(View.VISIBLE);
@@ -110,14 +112,14 @@ public class WebActivity extends AppCompatActivity {
         webTitle.setText(getIntent().getStringExtra(FusionAction.WEB_KEY.TITLE));
         webView.loadUrl(getIntent().getStringExtra(FusionAction.WEB_KEY.URL));
         currentUrl = getIntent().getStringExtra(FusionAction.WEB_KEY.URL);
+        Log.v(TAG,"##########是否可以返回"+webView.canGoBack());
         webView.setWebViewClient(new WebViewClient() {
             @Override
-            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-                Log.v(TAG, "#######1111#####" + request.getUrl().toString());
-                view.loadUrl(request.getUrl().toString());
+            public boolean shouldOverrideUrlLoading(WebView view, String url)
+            {
+                view.loadUrl(url);
                 return true;
             }
-
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
                 super.onPageStarted(view, url, favicon);
@@ -197,10 +199,11 @@ public class WebActivity extends AppCompatActivity {
                             @Override
                             public void onReceiveValue(String value) {
                                 //此处为js 返回的结果
+                                Log.v(TAG,"#############打印当前的收藏状态"+value);
                             }
                         });
                     }
-                } else if (false) {
+                } /*else if (false) {
                     if (andVersion < 18) {
                         webView.loadUrl("javascript:isShowIcon()");
                     } else {
@@ -211,7 +214,7 @@ public class WebActivity extends AppCompatActivity {
                             }
                         });
                     }
-                } else if (false) {//关闭弹框
+                }*/ /*else if (false) {//关闭弹框
                     if (andVersion < 18) {
                         webView.loadUrl("javascript:closeModel()");
                     } else {
@@ -222,7 +225,7 @@ public class WebActivity extends AppCompatActivity {
                             }
                         });
                     }
-                }
+                }*/
             }
         });
 
@@ -232,6 +235,7 @@ public class WebActivity extends AppCompatActivity {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK && webView.canGoBack()) {
+            Log.v(TAG,"KeyDown##################"+webView.canGoBack());
             webView.goBack();
             return true;
         }
@@ -265,19 +269,17 @@ public class WebActivity extends AppCompatActivity {
             intent.putExtra(FusionAction.WEB_KEY.TITLE, title);
             intent.putExtra(FusionAction.WEB_KEY.VISIBLE, "1");
             toolUtil.clearWebCache(WebActivity.this);
-            titleBarLayout.setVisibility(View.VISIBLE);
             context.startActivity(intent);
         }
 
         @Override
         @JavascriptInterface
         public void openTransTitleActivity(String url) {//打开新页面（针对要有透明导航栏的页面）
-            Log.v(TAG, "##########透明啊");
             Intent intent = new Intent(getApplicationContext(), WebActivity.class);
             intent.putExtra(FusionAction.WEB_KEY.URL, HttpHelper.HTTP_WEBURL + url);
             intent.putExtra(FusionAction.WEB_KEY.TITLE, "");
-            toolUtil.clearWebCache(WebActivity.this);
             intent.putExtra(FusionAction.WEB_KEY.VISIBLE, "0");
+            toolUtil.clearWebCache(WebActivity.this);
             context.startActivity(intent);
         }
 
@@ -289,12 +291,20 @@ public class WebActivity extends AppCompatActivity {
         }
 
         @Override
+        @JavascriptInterface
         public void goBack() {
-            if (webView.canGoBack()) {
-                webView.goBack();//返回上个页面
-            }
+            webView.post(new Runnable(){
+                @Override
+                public void run() {
+                    if (webView.canGoBack()){
+                        webView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
+                        webView.goBack();//返回上个页面
+                    }else{
+                        finish();
+                    }
+                }
+            });
         }
-
         @Override
         @JavascriptInterface
         public void openLogin() {
@@ -324,9 +334,11 @@ public class WebActivity extends AppCompatActivity {
 
         @Override
         @JavascriptInterface
-        public void finish() {
+        public void finish11() {
             if (webView.canGoBack()) {
                 webView.goBack();
+            }else{
+                finish();
             }
         }
 
@@ -382,7 +394,9 @@ public class WebActivity extends AppCompatActivity {
         @Override
         @JavascriptInterface
         public String getMinePosition() {
-            String detailAddress = sharedPreferences.getString("detailAddress", null);
+            SharedPreferences mSp = context.getSharedPreferences("location_sp",
+                    Context.MODE_PRIVATE);
+            String detailAddress = mSp.getString("detailAddress", null);
             return detailAddress;
         }
 
@@ -396,10 +410,12 @@ public class WebActivity extends AppCompatActivity {
         @JavascriptInterface
         public void toShare() {
         }
-
         @Override
         @JavascriptInterface
         public void finished() {
+            if (webView.canGoBack()) {
+                webView.goBack();
+            }
         }
 
         @Override
@@ -417,13 +433,14 @@ public class WebActivity extends AppCompatActivity {
 
         @Override
         @JavascriptInterface
-        public String getLocation() {
-            String latitiude = sharedPreferences.getString("latitiude", null);
-            String longitude = sharedPreferences.getString("longitude", null);
-            String city = sharedPreferences.getString("city", null);
-            return latitiude + "," + longitude + "," + city;
+        public String getLocation(){
+            SharedPreferences mSp = context.getSharedPreferences("location_sp",
+                    Context.MODE_PRIVATE);
+            String latitiude = mSp.getString("latitiude", null);
+            String longitude = mSp.getString("longitude", null);
+            String city = mSp.getString("city", null);
+            String province=mSp.getString("province",null);
+            return latitiude + "," + longitude + "," + province+","+city;
         }
     }
-
-
 }

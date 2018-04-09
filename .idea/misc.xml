@@ -8,7 +8,7 @@
     <option name="id" value="1478658275229" />
     <option name="importOrdering" value="ECLIPSE_44" />
     <option name="name" value="default" />
-    <option name="pathToConfigFileJava" value="$PROJECT_DIR$/../../../codeformatter.xml" />
+    <option name="pathToConfigFileJava" value="E:/codeformatter.xml" />
     <option name="selectedJavaProfile" value="CodeFormatter" />
     <option name="useOldEclipseJavaFormatter" value="true" />
   </component>

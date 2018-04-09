@@ -92,7 +92,7 @@ public class HomeFragment extends Fragment {
                     //获取省市
                     Utlity.saveCityAndProvince(getActivity(),
                             aMapLocation.getCity(),
-                            aMapLocation.getProvince(), mLatitiude, mLatitiude, aMapLocation.getAddress());
+                            aMapLocation.getProvince(), mLatitiude, mLongitude, aMapLocation.getAddress());
 
                     Log.d(TAG, "latitiude = " + mLatitiude + " longitude = "
                             + mLongitude);
@@ -185,6 +185,7 @@ public class HomeFragment extends Fragment {
         mAutomobile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Log.v(TAG,"#########打印当前的用户id"+sharedPreferences.getString("sid", null));
                 if (sharedPreferences.getString("sid", null) == null) {
                     startActivity(new Intent(FusionAction.LOGIN_ACTION));
                 } else {
