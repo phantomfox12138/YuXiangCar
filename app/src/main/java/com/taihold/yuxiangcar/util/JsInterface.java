@@ -22,7 +22,7 @@ public interface JsInterface {
     @JavascriptInterface
     public String getUserName();//获取登录用户名
     @JavascriptInterface
-    public void goBack();//不关闭当前页面，返回上个页面
+    public void goBack(String reload);//不关闭当前页面，返回上个页面
     @JavascriptInterface
     public void openLogin();//跳到登录页面
     @JavascriptInterface
@@ -55,5 +55,7 @@ public interface JsInterface {
     public  void toShare();//分享弹框
     @JavascriptInterface
     public void finished();//关闭当前页面，相当于替换
+    @JavascriptInterface
+    public void reloadUrl();//刷新页面
 
 }

@@ -185,7 +185,6 @@ public class HomeFragment extends Fragment {
         mAutomobile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.v(TAG,"#########打印当前的用户id"+sharedPreferences.getString("sid", null));
                 if (sharedPreferences.getString("sid", null) == null) {
                     startActivity(new Intent(FusionAction.LOGIN_ACTION));
                 } else {

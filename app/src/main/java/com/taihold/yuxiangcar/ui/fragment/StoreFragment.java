@@ -9,7 +9,6 @@ import android.net.http.SslError;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,7 +39,6 @@ public class StoreFragment extends Fragment {
     WebView webView;
     WebSettings mWebSettings;
     private SharedPreferences sharedPreferences;
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -83,7 +81,6 @@ public class StoreFragment extends Fragment {
         //JS调用Android的方法
         webView.addJavascriptInterface(new AndroidJS(getContext()), "JSHook");
         webView.loadUrl(HttpHelper.HTTP_WEBURL + FusionAction.WEB_KEY.STORELIST);
-        Log.v(TAG,"##########打印当前的url"+HttpHelper.HTTP_WEBURL + FusionAction.WEB_KEY.STORELIST);
         webView.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
@@ -131,7 +128,7 @@ public class StoreFragment extends Fragment {
         @Override
         @JavascriptInterface
         public void openNewActivity(String title, String url) {
-            Intent intent = new Intent(getContext(), StoreFragment.class);
+            Intent intent = new Intent(getContext(), WebActivity.class);
             intent.putExtra(FusionAction.WEB_KEY.URL, HttpHelper.HTTP_WEBURL + url);
             intent.putExtra(FusionAction.WEB_KEY.TITLE, title);
             intent.putExtra(FusionAction.WEB_KEY.VISIBLE, "1");
@@ -142,7 +139,7 @@ public class StoreFragment extends Fragment {
         @Override
         @JavascriptInterface
         public void openTransTitleActivity(String url) {//打开新页面（针对要有透明导航栏的页面）
-            Intent intent = new Intent(getContext(), StoreFragment.class);
+            Intent intent = new Intent(getContext(), WebActivity.class);
             intent.putExtra(FusionAction.WEB_KEY.URL, HttpHelper.HTTP_WEBURL + url);
             intent.putExtra(FusionAction.WEB_KEY.TITLE, "");
             toolUtil.clearWebCache(getActivity());
@@ -152,16 +149,18 @@ public class StoreFragment extends Fragment {
 
         @Override
         @JavascriptInterface
-        public String getUserName() {
+        public String getUserName(){
             String userName = sharedPreferences.getString("loginName", null);
             return userName;
         }
 
         @Override
-        public void goBack() {
-            if (webView.canGoBack()) {
+        public void goBack(String reload) {
+          /*  if (webView.canGoBack()) {
                 webView.goBack();//返回上个页面
-            }
+            }else{
+                getActivity().finish();
+            }*/
         }
 
         @Override
@@ -180,13 +179,16 @@ public class StoreFragment extends Fragment {
         @Override
         @JavascriptInterface
         public void setTitle(String title) {
-
         }
 
         @Override
         @JavascriptInterface
         public void finish11() {
-
+            if (webView.canGoBack()) {
+                webView.goBack();//返回上个页面
+            }else{
+                getActivity().finish();
+            }
         }
 
         @Override
@@ -262,10 +264,24 @@ public class StoreFragment extends Fragment {
         @JavascriptInterface
         public void toShare() {
         }
-
         @Override
         @JavascriptInterface
         public void finished() {
+        }
+
+        @Override
+        @JavascriptInterface
+        public void reloadUrl() {
+            Log.v(TAG,"################reloadUrl");
+            webView.post(new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    webView.reload();
+                }
+            });
+
         }
 
         @Override

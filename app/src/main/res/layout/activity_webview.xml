@@ -37,7 +37,7 @@
                 android:padding="@dimen/dp_16"
                 android:textColor="#f24f42"
                 android:textSize="@dimen/sp_18"
-                android:text="保存"
+                android:text=""
                 android:visibility="gone"
                 />
                <ImageView
@@ -51,6 +51,13 @@
                    android:scaleType="center"
                    android:visibility="gone"
                    />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height=".5dp"
+                android:layout_alignParentBottom="true"
+                android:background="#e4e4e4"
+                ></TextView>
+
         </RelativeLayout>
 
     </LinearLayout>

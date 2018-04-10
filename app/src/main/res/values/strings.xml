@@ -39,7 +39,7 @@
     <string name="mine_card_title">卡券</string>
     <string name="mine_order_wait_pay">待付款</string>
     <string name="mine_order_wait_service">待服务</string>
-    <string name="mine_order_wait_appraise">待评价</string>
+    <string name="mine_order_wait_appraise">待确认</string>
     <string name="mine_my_car">我的爱车</string>
     <string name="mine_my_second_hand">二手车</string>
     <string name="mine_my_collection">我的收藏</string>

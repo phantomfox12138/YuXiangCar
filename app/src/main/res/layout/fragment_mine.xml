@@ -108,6 +108,7 @@
                     android:background="#F2F2F2" />
 
                 <LinearLayout
+                    android:id="@+id/my_card_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -123,10 +124,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/dp_8"
-                        android:text="@string/mine_service_code"
+                        android:text="@string/mine_card_title"
                         android:textColor="#444"
                         android:textSize="@dimen/sp_16" />
-
                     <TextView
                         android:id="@+id/card_code"
                         android:layout_width="wrap_content"
@@ -145,13 +145,11 @@
                 android:layout_marginTop="@dimen/dp_8"
                 android:background="#fff"
                 android:orientation="vertical">
-
                 <RelativeLayout
+                    android:id="@+id/my_order_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="@dimen/dp_16">
-
-
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -185,6 +183,7 @@
                     android:background="#F2F2F2" />
 
                 <LinearLayout
+                    android:id="@+id/to_pay_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
@@ -212,6 +211,7 @@
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/to_service_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -233,6 +233,7 @@
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/to_sure_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -293,6 +294,7 @@
                     android:background="#F2F2F2" />
 
                 <LinearLayout
+                    android:id="@+id/my_second_car"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
@@ -321,6 +323,7 @@
                     android:background="#F2F2F2" />
 
                 <LinearLayout
+                    android:id="@+id/my_collect"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"

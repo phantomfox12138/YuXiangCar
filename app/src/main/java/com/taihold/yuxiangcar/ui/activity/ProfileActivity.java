@@ -12,6 +12,7 @@ import android.view.View;
 
 import com.taihold.yuxiangcar.R;
 import com.taihold.yuxiangcar.common.FusionAction;
+import com.taihold.yuxiangcar.logic.HttpHelper;
 import com.yanzhenjie.permission.AndPermission;
 import com.yanzhenjie.permission.PermissionListener;
 import com.yongchun.library.view.ImageSelectorActivity;
@@ -49,7 +50,12 @@ public class ProfileActivity extends AppCompatActivity
             @Override
             public void onClick(View view)
             {
-                startActivity(new Intent(FusionAction.ADDRESS_LIST));
+                Intent intent = new Intent(getApplicationContext(), WebActivity.class);
+                intent.putExtra(FusionAction.WEB_KEY.URL,
+                        HttpHelper.HTTP_WEBURL
+                                + FusionAction.WEB_KEY.ADDRESSMGR);
+                intent.putExtra(FusionAction.WEB_KEY.TITLE, "收货地址");
+                startActivity(intent);
             }
         });
         
