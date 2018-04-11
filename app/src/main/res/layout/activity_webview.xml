@@ -36,7 +36,7 @@
                 android:layout_centerVertical="true"
                 android:padding="@dimen/dp_16"
                 android:textColor="#f24f42"
-                android:textSize="@dimen/sp_18"
+                android:textSize="@dimen/sp_16"
                 android:text=""
                 android:visibility="gone"
                 />
@@ -47,8 +47,6 @@
                    android:layout_alignParentRight="true"
                    android:layout_centerVertical="true"
                    android:layout_margin="@dimen/dp_16"
-                   android:background="@mipmap/collection_select"
-                   android:scaleType="center"
                    android:visibility="gone"
                    />
             <TextView

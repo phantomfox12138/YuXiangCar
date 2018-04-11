@@ -156,11 +156,11 @@ public class StoreFragment extends Fragment {
 
         @Override
         public void goBack(String reload) {
-          /*  if (webView.canGoBack()) {
+            if (webView.canGoBack()) {
                 webView.goBack();//返回上个页面
             }else{
                 getActivity().finish();
-            }*/
+            }
         }
 
         @Override
