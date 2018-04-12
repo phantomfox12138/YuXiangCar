@@ -300,6 +300,7 @@ public class HomeFragment extends Fragment {
         mStarLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 if (sharedPreferences.getString("sid", null) == null) {
                     startActivity(new Intent(FusionAction.LOGIN_ACTION));
                 } else {
