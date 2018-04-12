@@ -47,6 +47,12 @@ public class StoreFragment extends Fragment {
         return mRootView;
     }
 
+    @Override
+    public void onResume(){
+        super.onResume();
+        webView.reload();
+    }
+
     private void initView() {
         webView = mRootView.findViewById(R.id.store_web);
         mWebSettings = webView.getSettings();
@@ -107,6 +113,7 @@ public class StoreFragment extends Fragment {
 
     @Override
     public void onDestroyView() {
+
         if (webView != null) {
             webView.loadDataWithBaseURL(null, "", "text/html", "utf-8", null);
             webView.clearHistory();
@@ -149,7 +156,7 @@ public class StoreFragment extends Fragment {
 
         @Override
         @JavascriptInterface
-        public String getUserName(){
+        public String getUserName() {
             String userName = sharedPreferences.getString("loginName", null);
             return userName;
         }
@@ -158,7 +165,7 @@ public class StoreFragment extends Fragment {
         public void goBack(String reload) {
             if (webView.canGoBack()) {
                 webView.goBack();//返回上个页面
-            }else{
+            } else {
                 getActivity().finish();
             }
         }
@@ -186,7 +193,7 @@ public class StoreFragment extends Fragment {
         public void finish11() {
             if (webView.canGoBack()) {
                 webView.goBack();//返回上个页面
-            }else{
+            } else {
                 getActivity().finish();
             }
         }
@@ -264,6 +271,7 @@ public class StoreFragment extends Fragment {
         @JavascriptInterface
         public void toShare() {
         }
+
         @Override
         @JavascriptInterface
         public void finished() {
@@ -272,12 +280,10 @@ public class StoreFragment extends Fragment {
         @Override
         @JavascriptInterface
         public void reloadUrl() {
-            Log.v(TAG,"################reloadUrl");
-            webView.post(new Runnable()
-            {
+            Log.v(TAG, "################reloadUrl");
+            webView.post(new Runnable() {
                 @Override
-                public void run()
-                {
+                public void run() {
                     webView.reload();
                 }
             });

@@ -12,7 +12,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -117,15 +116,10 @@ public class WebActivity extends AppCompatActivity {
             titleBarLayout.setVisibility(View.GONE);
         }
 
-
-
-
         //设置标题,加载网页
         webTitle.setText(getIntent().getStringExtra(FusionAction.WEB_KEY.TITLE));
         webView.loadUrl(getIntent().getStringExtra(FusionAction.WEB_KEY.URL));
         currentUrl = getIntent().getStringExtra(FusionAction.WEB_KEY.URL);
-
-        Log.v(TAG,"#############打印当前的currentUrl"+currentUrl);
         webView.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -576,7 +570,6 @@ public class WebActivity extends AppCompatActivity {
         @Override
         @JavascriptInterface
         public void modifyTitle(String title) {
-            Log.v(TAG,"##############修改标题");
             changePageTitle=title;
             myHandler.sendEmptyMessage(3);
         }
