@@ -69,6 +69,8 @@ public class HomeFragment extends Fragment {
 
     private RelativeLayout mCarFriend;
 
+    private RelativeLayout mStarLayout;
+
     //    声明AMapLocationClient类对象
     public AMapLocationClient mLocationClient = null;
 
@@ -145,6 +147,7 @@ public class HomeFragment extends Fragment {
         mAutoParts = mRootView.findViewById(R.id.auto_parts_layout);
         mReservedPark = mRootView.findViewById(R.id.reserved_parking_layout);
         mCarFriend = mRootView.findViewById(R.id.car_friend_layout);
+        mStarLayout=mRootView.findViewById(R.id.star_layout);
         HashMap<String, Integer> file_maps = new HashMap<String, Integer>();
         file_maps.put("Hannibal", R.mipmap.hannibal);
         file_maps.put("Big Bang Theory", R.mipmap.bigbang);
@@ -291,6 +294,22 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
+            }
+        });
+        //明星曝光台
+        mStarLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (sharedPreferences.getString("sid", null) == null) {
+                    startActivity(new Intent(FusionAction.LOGIN_ACTION));
+                } else {
+                    Intent intent = new Intent(getActivity(), WebActivity.class);
+                    intent.putExtra(FusionAction.WEB_KEY.URL,
+                            HttpHelper.HTTP_WEBURL
+                                    + FusionAction.WEB_KEY.STORELIST);
+                    intent.putExtra(FusionAction.WEB_KEY.TITLE, "门店");
+                    startActivity(intent);
+                }
             }
         });
 
